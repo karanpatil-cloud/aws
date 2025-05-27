@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cupcake">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cycle</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+
+  <h1 class="text-4xl font-bold text-center mb-10 text-purple-700">🛍️ Welcome to DreamShop - T-Shirts</h1>
+
+  <!-- Tabs for Shopping Steps -->
+  <div role="tablist" class="tabs tabs-boxed justify-center mb-8">
+    <a role="tab" class="tab tab-active" onclick="showTab('products')">Products</a>
+    <a role="tab" class="tab" onclick="showTab('cart')">Cart</a>
+    <a role="tab" class="tab" onclick="showTab('checkout')">Checkout</a>
+    <a role="tab" class="tab" onclick="showTab('confirmation')">Confirmation</a>
+  </div>
+
+  <!-- Products Tab -->
+  <div id="products" class="tab-content">
+    <!-- Add New Product Form -->
+    <div class="card bg-white shadow-lg p-6 mb-6 max-w-xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4 text-center text-purple-600">➕ Add New T-Shirt</h2>
+      <input id="newName" type="text" placeholder="T-Shirt Name" class="input input-bordered w-full mb-2" />
+      <input id="newPrice" type="number" placeholder="Price" class="input input-bordered w-full mb-2" />
+      <input id="newImage" type="text" placeholder="Image URL" class="input input-bordered w-full mb-4" />
+      <button class="btn btn-success w-full" onclick="addNewProduct()">Add Product</button>
+    </div>
+
+    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- T-Shirt Cards -->
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://www.apparelart.com.au/wp-content/uploads/2019/09/5026_classic_tee_black_4.jpg" alt="T-Shirt 1" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Classic White Tee</h2>
+          <p>$12</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Classic White Tee', 12)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://th.bing.com/th/id/OIP.eYwj-Oe6zvpZekSv-XkgGAHaJQ?cb=iwp2&rs=1&pid=ImgDetMain" alt="T-Shirt 2" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Black V-Neck</h2>
+          <p>$15</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Black V-Neck', 15)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://th.bing.com/th/id/OIP.iJB9YKcvQZ31JAuVnrAWlwHaJQ?cb=iwp2&rs=1&pid=ImgDetMain" alt="T-Shirt 3" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Graphic Print Tee</h2>
+          <p>$18</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Graphic Print Tee', 18)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://th.bing.com/th/id/OIP.TYnSTahwtSkR6WTQivY5pwHaHa?cb=iwp2&rs=1&pid=ImgDetMain" alt="T-Shirt 4" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Striped Navy Tee</h2>
+          <p>$14</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Striped Navy Tee', 14)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://th.bing.com/th/id/OIP.ez3EhbYmWIY0VmOltwDPgAHaHa?o=7&cb=iwp2rm=3&rs=1&pid=ImgDetMain" alt="T-Shirt 5" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Red Crew Neck</h2>
+          <p>$13</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Red Crew Neck', 13)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card bg-white shadow-xl">
+        <figure><img src="https://th.bing.com/th/id/OIP._Rl45gpEv13bRELw2hwcfQHaLH?cb=iwp2&rs=1&pid=ImgDetMain" alt="T-Shirt 6" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">Blue Henley Tee</h2>
+          <p>$16</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('Blue Henley Tee', 16)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Tab -->
+  <div id="cart" class="tab-content hidden">
+    <ul id="cart-items" class="mb-4 list-disc list-inside"></ul>
+    <p class="text-xl font-bold">Total: $<span id="cart-total">0</span></p>
+    <button class="btn btn-success mt-4" onclick="showTab('checkout')">Proceed to Checkout</button>
+  </div>
+
+  <!-- Checkout Tab -->
+  <div id="checkout" class="tab-content hidden">
+    <h2 class="text-xl mb-2 font-bold">Delivery Details</h2>
+    <input type="text" placeholder="Your Name" class="input input-bordered mb-2 w-full" />
+    <input type="text" placeholder="Address" class="input input-bordered mb-2 w-full" />
+    <h2 class="text-xl mb-2 font-bold">Payment Method</h2>
+    <select class="select select-bordered w-full mb-4">
+      <option>Credit Card</option>
+      <option>PayPal</option>
+      <option>UPI</option>
+      <option>Cash on Delivery</option>
+    </select>
+    <button class="btn btn-primary w-full" onclick="showTab('confirmation')">Place Order</button>
+  </div>
+
+  <!-- Confirmation Tab -->
+  <div id="confirmation" class="tab-content hidden text-center">
+    <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 Order Confirmed!</h2>
+    <p>Thank you for your purchase. Your T-Shirts will be delivered soon.</p>
+  </div>
+
+  <script>
+    const cart = [];
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(div => div.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+      if (tabId === 'cart') updateCartUI();
+    }
+
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      alert(`${item} added to cart!`);
+    }
+
+    function updateCartUI() {
+      const cartList = document.getElementById('cart-items');
+      cartList.innerHTML = '';
+      let total = 0;
+      cart.forEach(({ item, price }) => {
+        const li = document.createElement('li');
+        li.textContent = `${item} - $${price}`;
+        cartList.appendChild(li);
+        total += price;
+      });
+      document.getElementById('cart-total').textContent = total;
+    }
+
+    function addNewProduct() {
+      const name = document.getElementById("newName").value;
+      const price = parseFloat(document.getElementById("newPrice").value);
+      const image = document.getElementById("newImage").value;
+
+      if (!name || isNaN(price) || !image) {
+        alert("Please fill out all fields correctly.");
+        return;
+      }
+
+      const grid = document.getElementById("product-grid");
+      const card = document.createElement("div");
+      card.className = "card bg-white shadow-xl";
+
+      card.innerHTML = `
+        <figure><img src="${image}" alt="${name}" /></figure>
+        <div class="card-body">
+          <h2 class="card-title">${name}</h2>
+          <p>$${price}</p>
+          <button class="btn btn-primary w-full" onclick="addToCart('${name}', ${price})">Add to Cart</button>
+        </div>
+      `;
+
+      grid.appendChild(card);
+
+      document.getElementById("newName").value = "";
+      document.getElementById("newPrice").value = "";
+      document.getElementById("newImage").value = "";
+      alert("Product added successfully!");
+    }
+  </script>
+
+</body>
+</html>
